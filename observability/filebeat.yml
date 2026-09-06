@@ -1,0 +1,18 @@
+filebeat.inputs:
+  - type: container
+    enabled: true
+    paths:
+      - /var/lib/docker/containers/*/*.log
+    stream: all
+    processors:
+      - add_docker_metadata: ~
+      - add_host_metadata: ~
+
+queue.disk:
+  max_size: 1GB
+
+output.kafka:
+  hosts: ["kafka:9092"]
+  topic: logs-microservices
+  required_acks: -1
+  compression: gzip
